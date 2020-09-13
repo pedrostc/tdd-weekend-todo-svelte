@@ -5,9 +5,7 @@ import { text } from "svelte/internal";
 let isButtonDisabled = true;
 
 function isEmpty(event){
-    if (event.target.value) ? isButtonDisabled = false  
-        isButtonDisabled = true
-    }
+    isButtonDisabled = event.target.value ? false : true
 }
 
 </script>
