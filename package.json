@@ -15,6 +15,7 @@
     "@rollup/plugin-node-resolve": "^8.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/svelte": "^3.0.0",
+    "@testing-library/user-event": "^12.1.7",
     "babel-jest": "^26.3.0",
     "jest": "^26.4.2",
     "rollup": "^2.3.4",
