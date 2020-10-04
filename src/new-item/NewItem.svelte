@@ -1,11 +1,16 @@
 <script>
-import { type } from "os";
-import { text } from "svelte/internal";
 
-let isButtonDisabled = true;
+import { createEventDispatcher } from 'svelte';
 
-function isEmpty(event){
-    isButtonDisabled = event.target.value ? false : true
+let todoText = '';
+$: isButtonDisabled = !todoText;
+
+const dispatch = createEventDispatcher();
+
+function sendItem(){
+    dispatch('addItem', {
+        item: todoText
+    })
 }
 
 </script>
@@ -13,9 +18,14 @@ function isEmpty(event){
 <input
     type='text'
     placeholder="O que precisa ser feito?"
-    on:change={isEmpty}
+    bind:value={todoText}
     >
-<button disabled={isButtonDisabled}>Add</button>
+
+<button 
+    disabled={isButtonDisabled}
+    on:click={sendItem}
+    >Add
+</button>
 
 <style>
 

@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
-import { render, fireEvent } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
+import userEvent from "@testing-library/user-event";
 
 import NewItem from './NewItem.svelte';
 
@@ -19,7 +20,8 @@ describe('NewItem Component', () => {
     describe('when the user enters text to the box', () => {
         it('enables the "Add" button', async () => {
             const input = rendered.getByPlaceholderText('O que precisa ser feito?');
-            await fireEvent.change(input, { target: { value: 'teste' } });
+            
+            await userEvent.type(input, 'teste')
 
             const addBtn = rendered.getByText('Add');
             expect(addBtn).not.toHaveAttribute('disabled');
