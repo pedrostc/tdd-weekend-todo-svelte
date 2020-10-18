@@ -25,9 +25,7 @@ describe('App', () => {
             });
         });
 
-        
-        //TODO: start from here
-        // the list should start empty and should only add the item on add click
+
         describe('when adding a new item', () => {
             it('renders the text on the page', async () => {
                 const expectedText = 'meu novo item';
@@ -35,7 +33,7 @@ describe('App', () => {
                 const input = rendered.getByPlaceholderText('O que precisa ser feito?');
                 await userEvent.type(input, expectedText);
 
-                expect(rendered.getAllByRole('listitem').length).toEqual(0);
+                expect(rendered.queryAllByRole('listitem').length).toEqual(0);
 
                 const addBtn = rendered.getByText('Add');
                 await userEvent.click(addBtn);
@@ -43,6 +41,31 @@ describe('App', () => {
                 expect(rendered.getByText(expectedText)).toBeInTheDocument();
                 expect(rendered.getAllByRole('listitem').length).toEqual(1);
             });
+
         });
+    });
+
+    describe('given a list of ToDos', () => {
+        let rendered;
+        const expectedText = 'meu novo item';
+        beforeEach(async ()=>{
+            rendered = render(App);
+            const input = rendered.getByPlaceholderText('O que precisa ser feito?');
+            await userEvent.type(input, expectedText);
+
+            const addBtn = rendered.getByText('Add');
+            await userEvent.click(addBtn);            
+        });
+
+        describe('when clicking on the checkbox',() => {
+            it('should add the "completed" class to the item', async () => {
+
+                const checkbox = rendered.getByLabelText(expectedText);
+                await userEvent.click(checkbox);
+           
+                const label = rendered.getByText(expectedText);
+                expect(label.className).toEqual('completed')
+            })
+        })
     });
 });
