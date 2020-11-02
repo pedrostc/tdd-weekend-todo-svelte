@@ -27,4 +27,24 @@ describe('NewItem Component', () => {
             expect(addBtn).not.toHaveAttribute('disabled');
         })
     });
+
+    describe('given that there is text in the box', () => {
+        beforeEach(async () => {
+            const input = rendered.getByPlaceholderText('O que precisa ser feito?');
+            await userEvent.type(input, 'teste')
+        });
+
+        describe('when the user clicks the "Add" button', () => {
+            beforeEach(async () => {
+                const addBtn = rendered.getByText('Add');
+                await userEvent.click(addBtn);
+            });
+
+            it('should clear the box', () => {
+                
+                const box = rendered.getByRole('textbox');
+                expect(box.value).toEqual('');
+            })
+        });
+    });
 });

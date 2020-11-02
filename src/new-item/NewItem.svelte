@@ -7,10 +7,19 @@ $: isButtonDisabled = !todoText;
 
 const dispatch = createEventDispatcher();
 
-function sendItem(){
+function addClick(){
+    emitEvent();
+    clearText();
+}
+
+function emitEvent(){
     dispatch('addItem', {
         item: todoText
-    })
+    });
+}
+
+function clearText(){
+    todoText = '';
 }
 
 </script>
@@ -23,7 +32,7 @@ function sendItem(){
 
 <button 
     disabled={isButtonDisabled}
-    on:click={sendItem}
+    on:click={addClick}
     >Add
 </button>
 

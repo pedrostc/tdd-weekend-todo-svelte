@@ -1,6 +1,7 @@
 <script>
 
 	import NewItem from './new-item/NewItem.svelte';
+	import ToDo from './to-do/ToDo.svelte';
 
 	let toDos = [];
 	let yes = false;
@@ -19,12 +20,7 @@
 		<ul>
 			{#each toDos as toDo, id}
 				<li>
-					<input type="checkbox" id={`todo-${id}`} bind:checked={yes}>
-					{#if yes}					
-						<label for={`todo-${id}`} class="completed">{toDo}</label>					
-					{:else}
-						<label for={`todo-${id}`} >{toDo}</label>					
-					{/if}
+					<ToDo id={id} text={toDo} />
 				</li>
 			{/each}
 		</ul>
