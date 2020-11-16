@@ -3,16 +3,18 @@
 - To do list
     - [x] Create new items
     - [x] Mark an item as completed
-    - [x] Edit item
+    - [ ] Edit item
       - [x] enter edit mode
       - [x] exit edit mode
-    - [] Delete items
+      - [ ] test if the item test is changing on blur
+    - [x] Delete items
       - [x] Fire delete event from Item
       - [x] add delete button
-      - [] handle event on App - START HERE
+      - [x] handle event on App
+  
+    - [] Active Item counter - START HERE
     - [] Filter items by status
     - [] Clear completed items
-    - [] Active Item counter
+    - [] refactor todo item to fire events instead of using binds?
 
 FOR NEXT SESSION:
-- Remove checkbox selection on label double-clicking

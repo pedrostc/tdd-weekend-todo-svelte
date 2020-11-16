@@ -65,7 +65,17 @@ describe('App', () => {
            
                 const label = rendered.getByText(expectedText);
                 expect(label.className).toEqual('completed')
-            })
-        })
+            });
+        });
+
+        describe('when clicking on the delete button',() => {
+            it('should remove the item from the list', async () => {
+                const deleteBtn = rendered.getByText('Delete');
+                await userEvent.click(deleteBtn);
+           
+                const label = rendered.queryByText(expectedText);
+                expect(label).toBeFalsy();
+            });
+        });
     });
 });

@@ -1,13 +1,20 @@
 <script>
 
 	import NewItem from './new-item/NewItem.svelte';
-	import ToDo from './to-do/ToDo.svelte';
+	import ToDoList from './to-do-list/ToDoList.svelte';
+	import TodoModel from './model/todo-model.js';
 
 	let toDos = [];
-	let yes = false;
 
-	function handleItem(event){
-		toDos = [...toDos, event.detail.item];
+	function handleItem(event) {
+
+		let id = toDos.length;
+		let toDo = new TodoModel(id, event.detail.item);
+		toDos = [...toDos, toDo];
+	}
+
+	function handleDelete(event) {
+		toDos = toDos.filter((todo) => todo.id !== event.detail.id);
 	}
 
 </script>
@@ -15,17 +22,8 @@
 <main>
 	<h1>ToDos</h1>
 	<NewItem on:addItem={handleItem}/>
-
-	<fieldset>
-		<ul>
-			{#each toDos as toDo, id}
-				<li>
-					<ToDo id={id} text={toDo} />
-				</li>
-			{/each}
-		</ul>
-	</fieldset>
-
+	<ToDoList toDos={toDos} on:deleteItem={handleDelete}></ToDoList>
+	
 </main>
 
 <style>
