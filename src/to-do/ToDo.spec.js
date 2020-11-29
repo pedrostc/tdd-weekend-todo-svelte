@@ -78,7 +78,7 @@ describe('given a ToDo', () => {
     });
 });
 
-describe("given the component is on edit mode" , () => {
+describe("given the component is on edit mode and the user changes the item text" , () => {
 
     let rendered;
     let pendingTodo = new TodoModel(1, 'meu item incompleto');
@@ -91,33 +91,52 @@ describe("given the component is on edit mode" , () => {
 
         rendered = render(ToDo, props);
         
+        // Enters edit mode
         const itemLabel = rendered.getByText(props.toDo.text);
-        await userEvent.dblClick(itemLabel);        
+        await userEvent.dblClick(itemLabel);
 
+        // changes item text
+        const textBox = rendered.getByDisplayValue(props.toDo.text);
+        await userEvent.clear(textBox);
+        await userEvent.type(textBox, newText);
     });
 
-    describe('when blurring the input field', () => {
-        beforeEach(async () => {
-            const checkbox = rendered.getByRole('checkbox');
-            checkbox.focus();
-        });
+    const exitEditModeTestCases = [
+        {
+            method: "blurring the input field",
+            exitEditMode: () => {
+                const checkbox = rendered.getByRole('checkbox');
+                checkbox.focus();
+            }
+        }, {
+            method: "hitting ESC key",
+            exitEditMode: () => {
+                const txtBox = rendered.queryByRole('textbox');
+                fireEvent.keyDown(txtBox, { keyCode: 27 })
+            }
+        }
+    ];
 
-        it('hides the text box', async () => {
-            const txtBox = rendered.queryByRole('textbox');
-            expect(txtBox).toBeFalsy();
+    exitEditModeTestCases.forEach(({ method, exitEditMode }) => {
+        describe(`when ${method}`, () => {
+            beforeEach(() => {
+                exitEditMode();
+            });
+    
+            it('hides the text box', () => {
+                const txtBox = rendered.queryByRole('textbox');
+                expect(txtBox).toBeFalsy();
+            });
+    
+            it('changes the rendered text', () => {
+                const itemLabel = rendered.getByText(newText);
+                // em teoria não precisamos disso aqui pq o get falha caso nao ache o elemento
+                expect(itemLabel).toBeInTheDocument();
+            });
+    
+            it('changes the passed in toDo Item text', () => {
+                expect(props.toDo.text).toEqual(newText);
+            });
         });
     });
-
-    describe('when hitting ESC on the keyboard', () => {
-        beforeEach(async () => {
-            const txtBox = rendered.queryByRole('textbox');
-            await fireEvent.keyDown(txtBox, { keyCode: 27 })
-        });
-
-        it('hides the text box', async () => {
-            const txtBox = rendered.queryByRole('textbox');
-            expect(txtBox).toBeFalsy();
-        });
-    })
-
-})
+});
