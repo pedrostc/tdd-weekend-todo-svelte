@@ -13,6 +13,10 @@
       - [x] handle event on App
   
     - [ ] Active Item counter - START HERE
+      - [x] Create counter
+      - [x] hide counter for items == 0
+      - [ ] update counter on item checked - START HERE (probably need to add an event and update the array for it.)
+  
     - [ ] Filter items by status
     - [ ] Clear completed items
     - [ ] refactor todo item to fire events instead of using binds?

@@ -6,8 +6,17 @@
 
 	let toDos = [];
 
-	function handleItem(event) {
+	function formatTotalText(toDoList) {
+		const toDoFiltered = toDoList.filter(toDo => !toDo.done);
 
+		return `${toDoFiltered.length} item${toDoFiltered.length > 1 ? 's' : ''} left`;
+	}
+
+	function showTotalText(toDoList) {
+		return toDoList.length;
+	}
+
+	function handleItem(event) {
 		let id = toDos.length;
 		let toDo = new TodoModel(id, event.detail.item);
 		toDos = [...toDos, toDo];
@@ -24,6 +33,10 @@
 	<NewItem on:addItem={handleItem}/>
 	<ToDoList toDos={toDos} on:deleteItem={handleDelete}></ToDoList>
 	
+	{#if showTotalText(toDos)}
+		<div>{formatTotalText(toDos)}</div>
+	{/if}
+
 </main>
 
 <style>
