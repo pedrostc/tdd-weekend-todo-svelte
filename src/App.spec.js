@@ -29,17 +29,17 @@ describe('App', () => {
 
         describe('when adding a new item', () => {
             it('renders the text on the page', async () => {
-                const expectedText = 'meu novo item';
+                const item1Text = 'meu novo item';
 
                 const input = rendered.getByPlaceholderText('O que precisa ser feito?');
-                await userEvent.type(input, expectedText);
+                await userEvent.type(input, item1Text);
 
                 expect(rendered.queryAllByRole('listitem').length).toEqual(0);
 
                 const addBtn = rendered.getByText('Add');
                 await userEvent.click(addBtn);
 
-                expect(rendered.getByText(expectedText)).toBeInTheDocument();
+                expect(rendered.getByText(item1Text)).toBeInTheDocument();
                 expect(rendered.getAllByRole('listitem').length).toEqual(1);
             });
 
@@ -61,7 +61,9 @@ describe('App', () => {
             new TodoModel(3, "My third Item")
         ];
         
-        const expectedText = toDos[0].text;
+        const item1Text = toDos[0].text;
+        const item2Text = toDos[1].text;
+        const item3Text = toDos[2].text;
         beforeEach(async ()=>{
             rendered = render(App);
 
@@ -78,18 +80,37 @@ describe('App', () => {
 
         describe('when clicking on the checkbox',() => {
             it('should add the "completed" class to the item', async () => {
-                const checkbox = rendered.getByLabelText(expectedText);
+                const checkbox = rendered.getByLabelText(item1Text);
                 await userEvent.click(checkbox);
            
-                const label = rendered.getByText(expectedText);
+                const label = rendered.getByText(item1Text);
                 expect(label.className).toEqual('completed')
             });
 
             it('updates the total items counter', async () => {
-                const checkbox = rendered.getByLabelText(expectedText);
+                let checkbox = rendered.getByLabelText(item1Text);
+                await userEvent.click(checkbox);
+
+                checkbox = rendered.getByLabelText(item2Text);
                 await userEvent.click(checkbox);
                 
-                const expectedTotalText = "2 items left"
+                const expectedTotalText = "1 item left"
+                const totalText = rendered.getByText(expectedTotalText);
+    
+                expect(totalText).toBeInTheDocument();
+            });
+
+            it('show correct text for no items left', async () => {
+                let checkbox = rendered.getByLabelText(item1Text);
+                await userEvent.click(checkbox);
+
+                checkbox = rendered.getByLabelText(item2Text);
+                await userEvent.click(checkbox);
+                
+                checkbox = rendered.getByLabelText(item3Text);
+                await userEvent.click(checkbox);
+
+                const expectedTotalText = "0 items left"
                 const totalText = rendered.getByText(expectedTotalText);
     
                 expect(totalText).toBeInTheDocument();
@@ -101,7 +122,7 @@ describe('App', () => {
                 const deleteBtn = rendered.getAllByText('Delete')[0];
                 await userEvent.click(deleteBtn);
            
-                const label = rendered.queryByText(expectedText);
+                const label = rendered.queryByText(item1Text);
                 expect(label).toBeFalsy();
             });
         });

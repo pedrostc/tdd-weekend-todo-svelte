@@ -23,6 +23,15 @@ export class TodoModel {
         this._text = text;
         this._done = false;
     }
+
+    with(pred) {
+        const newModel = new TodoModel(this.id, this.text);
+        newModel.done = this.done;
+        
+        pred(newModel);
+
+        return newModel;
+    }
 }
 
 export default TodoModel;

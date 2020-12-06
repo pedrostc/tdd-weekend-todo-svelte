@@ -27,13 +27,23 @@ describe('given a ToDo', () => {
     });
 
     describe('when clicking on the checkbox',() => {
-        it('should add the "completed" class to the item', async () => {
+        const updateItemHandler = jest.fn();
 
-            const checkbox = rendered.getByLabelText(props.toDo.text);
+        it('fires updateItem event', async () => {
+            rendered.component.$on('updateItem', updateItemHandler);
+
+            const { text, id } = props.toDo;
+
+            const checkbox = rendered.getByLabelText(text);
             await userEvent.click(checkbox);
+
+            const expectedTodo = props.toDo.with(td => td.done = true);
        
-            const label = rendered.getByText(props.toDo.text);
-            expect(label.className).toEqual('completed')
+            const expectedEventArgs = { detail: expectedTodo };
+
+            expect(updateItemHandler).toHaveBeenCalledWith(
+                expect.objectContaining(expectedEventArgs)
+            );
         });
     });
     
@@ -119,24 +129,59 @@ describe("given the component is on edit mode and the user changes the item text
 
     exitEditModeTestCases.forEach(({ method, exitEditMode }) => {
         describe(`when ${method}`, () => {
+            const updateItemHandler = jest.fn();
+
             beforeEach(() => {
                 exitEditMode();
             });
+            
+
+            it('fires updateItem event', async () => {
+                rendered.component.$on('updateItem', updateItemHandler);
     
+                const { text } = props.toDo;
+    
+                const checkbox = rendered.getByLabelText(text);
+                await userEvent.click(checkbox);
+
+            });
             it('hides the text box', () => {
                 const txtBox = rendered.queryByRole('textbox');
                 expect(txtBox).toBeFalsy();
             });
     
-            it('changes the rendered text', () => {
-                const itemLabel = rendered.getByText(newText);
-                // em teoria não precisamos disso aqui pq o get falha caso nao ache o elemento
-                expect(itemLabel).toBeInTheDocument();
-            });
+            it('fires updateItem event', () => {
+                const expectedTodo = props.toDo.with(td => td.text = newText);
+           
+                const expectedEventArgs = { detail: expectedTodo };
     
-            it('changes the passed in toDo Item text', () => {
-                expect(props.toDo.text).toEqual(newText);
+                expect(updateItemHandler).toHaveBeenCalledWith(
+                    expect.objectContaining(expectedEventArgs)
+                );
             });
+        });
+    });
+});
+
+describe("given a completed Item", () => {
+    let rendered;
+
+    let completeToDo = new TodoModel(1, 'meu item incompleto');
+    completeToDo.done = true;
+
+    const props = {
+        toDo: completeToDo
+    };
+
+    beforeEach(async ()=>{
+        rendered = render(ToDo, props);
+    });
+    
+    
+    describe('when rendering', () => {
+        it('should add the "completed" class to the item', async () => {
+            const label = rendered.getByText(props.toDo.text);
+            expect(label.className).toEqual('completed')
         });
     });
 });

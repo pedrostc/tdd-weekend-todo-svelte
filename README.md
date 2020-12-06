@@ -12,13 +12,22 @@
       - [x] add delete button
       - [x] handle event on App
   
-    - [ ] Active Item counter - START HERE
+    - [x] Active Item counter - START HERE
       - [x] Create counter
       - [x] hide counter for items == 0
-      - [ ] update counter on item checked - START HERE (probably need to add an event and update the array for it.)
+      - [x] update counter on item checked
+        - [x] refactor the binds to use events instead
+          - [x] done
+          - [x] text
   
     - [ ] Filter items by status
+      - [ ] new filter (radio buttons)
+        - [ ] all
+        - [ ] complete
+        - [ ] done
+      - [ ] filter items by status 
+
     - [ ] Clear completed items
-    - [ ] refactor todo item to fire events instead of using binds?
+    - [x] refactor todo item to fire events instead of using binds?
 
 FOR NEXT SESSION:

@@ -15,6 +15,7 @@
 					<ToDo 
 						toDo={toDo}
 						on:deleteItem
+						on:updateItem
 					/>
 				</li>
 			{/each}
