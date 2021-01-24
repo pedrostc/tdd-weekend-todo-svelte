@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import App from './App.svelte';
 import TodoModel from './model/todo-model';
 
+const { click } = userEvent;
+
 describe('App', () => {
     it('shows title', () => {
         const rendered = render(App);
@@ -74,7 +76,7 @@ describe('App', () => {
                 const toDo = toDos[i];
 
                 await userEvent.type(input, toDo.text);
-                await userEvent.click(addBtn);  
+                await click(addBtn);  
             }
         });
 
@@ -124,6 +126,60 @@ describe('App', () => {
            
                 const label = rendered.queryByText(item1Text);
                 expect(label).toBeFalsy();
+            });
+        });
+
+        describe('with one completed and two pending', () => {
+            beforeEach(async () => {
+                const targetTodo = toDos[0].text;
+                const itemToComplete = rendered.getByLabelText(targetTodo);
+
+                await click(itemToComplete);
+            });
+
+            describe('when selecting the "Completed" filter', () => {
+                it('shows only the completed items', async () => {
+                    const completedFilter = rendered.getByLabelText("Completed");
+                    await click(completedFilter);
+                    
+                    const completedItems = rendered.queryAllByRole('listitem');
+
+                    expect(completedItems.length).toEqual(1);
+                });
+
+                describe('when selecting the "All" filter', () => {
+                    it('shows all items', async () => {
+                        const allFilter = rendered.getByLabelText("All");
+                        await click(allFilter);
+                        
+                        const items = rendered.queryAllByRole('listitem');
+    
+                        expect(items.length).toEqual(3);
+                    });
+                });
+            });
+
+            
+            describe('when selecting the "Active" filter', () => {
+                it('shows only the pending items', async () => {
+                    const activeFilter = rendered.getByLabelText("Active");
+                    await click(activeFilter);
+                    
+                    const pendingItems = rendered.queryAllByRole('listitem');
+
+                    expect(pendingItems.length).toEqual(2);
+                });
+
+                describe('when selecting the "All" filter', () => {
+                    it('shows all items', async () => {
+                        const allFilter = rendered.getByLabelText("All");
+                        await click(allFilter);
+                        
+                        const items = rendered.queryAllByRole('listitem');
+    
+                        expect(items.length).toEqual(3);
+                    });
+                });
             });
         });
 

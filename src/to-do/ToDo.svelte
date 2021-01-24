@@ -58,7 +58,7 @@
 
 </script>
 
-<input type="checkbox" id={`todo-${toDo.id}`} on:click={onCheckedToggle}>
+<input type="checkbox" id={`todo-${toDo.id}`} on:click={onCheckedToggle} checked={toDo.done}>
 {#if isEditMode}
 <input type="text" value={toDo.text} on:blur={onBlur} on:keydown={handleKeyPress} use:focus>
 {:else}

@@ -5,6 +5,15 @@
 	import TodoModel from './model/todo-model.js';
 
 	let toDos = [];
+	let filter = "all";
+
+	let filterDelegates = {
+		all: () => true,
+		completed: item => item.done,
+		active : item => !item.done
+	};
+
+	$: filteredTodos = toDos.filter(filterDelegates[filter]);
 
 	function formatTotalText(toDoList) {
 		const toDoFiltered = toDoList.filter(toDo => !toDo.done);
@@ -40,13 +49,25 @@
 		});
 	}
 
+	function filterCompleted(event) {
+		filter = 'completed';
+	}
+
+	function filterActive(event) {
+		filter = 'active';
+	}
+
+	function filterAll(event) {
+		filter = 'all';
+	}
+
 </script>
 
 <main>
 	<h1>ToDos</h1>
 	<NewItem on:addItem={handleItem}/>
 	<ToDoList 
-		toDos={toDos} 
+		toDos={filteredTodos} 
 		on:deleteItem={handleDelete} 
 		on:updateItem={handleUpdate}
 	></ToDoList>
@@ -54,7 +75,16 @@
 	{#if showTotalText(toDos)}
 		<div>
 			{formatTotalText(toDos)}
+			<br>
+			<input id="all" type="radio" value="All" name="filter" on:click={filterAll}>
+			<label for="all">All</label>
 			
+			<input id="active" type="radio" value="Active" name="filter" on:click={filterActive}>
+			<label for="active">Active</label>
+
+			<input id="completed" type="radio" value="Completed" name="filter" on:click={filterCompleted}>
+			<label for="completed">Completed</label>
+
 		</div>
 	{/if}
 
