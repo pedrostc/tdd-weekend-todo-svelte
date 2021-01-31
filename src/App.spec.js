@@ -190,4 +190,87 @@ describe('App', () => {
             expect(totalText).toBeInTheDocument();
         })
     });
+
+    describe('given a list of ToDos with at least one completed item', () => {
+        let rendered;
+        const toDos = [
+            new TodoModel(1, "My first Item"),
+            new TodoModel(2, "My second Item"),
+            new TodoModel(3, "My third Item")
+        ];
+        
+        const item1Text = toDos[0].text;
+        const item2Text = toDos[1].text;
+        const item3Text = toDos[2].text;
+
+        const clearButtonText = 'Clear Completed';
+        beforeEach(async () =>{
+            rendered = render(App);
+
+            const input = rendered.getByPlaceholderText('O que precisa ser feito?');
+            const addBtn = rendered.getByText('Add');
+
+            for(let i = 0; i < toDos.length; i++) {
+                const toDo = toDos[i];
+
+                await userEvent.type(input, toDo.text);
+                await click(addBtn);  
+            }
+
+            const itemToComplete = rendered.getByLabelText(item1Text);
+            await click(itemToComplete);
+        });
+
+
+        it('shows the `Clear Completed` button.', () =>{
+            const clearButton = rendered.getByText(clearButtonText);
+
+            expect(clearButton).toBeInTheDocument();
+        });
+
+        describe('when clicking the clear button', () => {
+            it('removes all completed items from the list', async () =>{
+                const clearButton = rendered.getByText(clearButtonText);
+                await click(clearButton);
+
+                const availableItems = rendered.queryAllByRole('listitem');
+
+                expect(availableItems.length).toEqual(2);
+            });
+        });
+    });
+
+    describe('given a list of ToDos with NO completed items', () => {
+        let rendered;
+        const toDos = [
+            new TodoModel(1, "My first Item"),
+            new TodoModel(2, "My second Item"),
+            new TodoModel(3, "My third Item")
+        ];
+        
+        const item1Text = toDos[0].text;
+        const item2Text = toDos[1].text;
+        const item3Text = toDos[2].text;
+
+        const clearButtonText = 'Clear Completed';
+        beforeEach(async () =>{
+            rendered = render(App);
+
+            const input = rendered.getByPlaceholderText('O que precisa ser feito?');
+            const addBtn = rendered.getByText('Add');
+
+            for(let i = 0; i < toDos.length; i++) {
+                const toDo = toDos[i];
+
+                await userEvent.type(input, toDo.text);
+                await click(addBtn);  
+            }
+        });
+
+        it('does not show the `Clear Completed` button.', () =>{
+            const clearButton = rendered.queryByText(clearButtonText);
+
+            expect(clearButton).not.toBeInTheDocument();
+        });
+    });
 });

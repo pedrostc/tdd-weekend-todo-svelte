@@ -37,9 +37,9 @@
     - [ ] Refactor app to use the store ?
     - [ ] Use lifecycle hooks to load the initial state of the item?
 
-    - [ ] Clear completed items
-      - [ ] when there is at least one completed item show the `Clear Complete` button.
-      - [ ] when clicking the button, delete all complete items from the list.
+    - [x] Clear completed items
+      - [x] when there is at least one completed item show the `Clear Complete` button.
+      - [x] when clicking the button, delete all complete items from the list.
     - [x] refactor todo item to fire events instead of using binds?
 
 FOR NEXT SESSION:

@@ -62,6 +62,14 @@
 		filter = event.target.value;
 	}
 
+	function hasCompleted(toDoList){
+		return toDoList.some((todo) => todo.done);
+	}
+
+	function clearCompleted(event){
+		toDos = toDos.filter((todo) => !todo.done);
+	}
+
 </script>
 
 <main>
@@ -85,6 +93,13 @@
 
 			<input id="completed" type="radio" value="completed" name="filter" on:click={applyFilter}>
 			<label for="completed">Completed</label>
+		</div>
+
+	{/if}
+
+	{#if hasCompleted(toDos)}
+		<div>
+			<button on:click={clearCompleted}>Clear Completed</button>
 		</div>
 	{/if}
 
