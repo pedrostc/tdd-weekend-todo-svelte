@@ -183,5 +183,10 @@ describe("given a completed Item", () => {
             const label = rendered.getByText(props.toDo.text);
             expect(label.className).toEqual('completed')
         });
+
+        it('renders the checkbox as checked', async () => {
+            const checkBox = rendered.getByLabelText(props.toDo.text);
+            expect(checkBox.checked).toEqual(true)
+        });
     });
 });

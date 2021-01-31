@@ -29,7 +29,6 @@
 
     - [x] fix items behavior after filtering.
       - [x] the items are not properly showing the "done" state in the checkbox after we change the filters.
-      - [ ] TEST THIS MOFO
 
     - [ ] refactor filter functionality.
       - [ ] use the radio button values to set the filter to be used
