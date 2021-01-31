@@ -30,14 +30,16 @@
     - [x] fix items behavior after filtering.
       - [x] the items are not properly showing the "done" state in the checkbox after we change the filters.
 
-    - [ ] refactor filter functionality.
-      - [ ] use the radio button values to set the filter to be used
-      - [ ] validate the filter name before setting ?
+    - [x] refactor filter functionality.
+      - [x] use the radio button values to set the filter to be used
+      - [x] validate the filter name before setting ?
 
     - [ ] Refactor app to use the store ?
     - [ ] Use lifecycle hooks to load the initial state of the item?
 
     - [ ] Clear completed items
+      - [ ] when there is at least one completed item show the `Clear Complete` button.
+      - [ ] when clicking the button, delete all complete items from the list.
     - [x] refactor todo item to fire events instead of using binds?
 
 FOR NEXT SESSION:

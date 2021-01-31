@@ -4,16 +4,25 @@
 	import ToDoList from './to-do-list/ToDoList.svelte';
 	import TodoModel from './model/todo-model.js';
 
+	const DEFAULT_FILTER = "all";
+
 	let toDos = [];
-	let filter = "all";
+	let filter = DEFAULT_FILTER;
 
-	let filterDelegates = {
-		all: () => true,
-		completed: item => item.done,
-		active : item => !item.done
-	};
+	let filterDelegatesMap = new Map([
+		['all', () => true],
+		['completed', item => item.done],
+		['active', item => !item.done]
+	])
 
-	$: filteredTodos = toDos.filter(filterDelegates[filter]);
+	$: filteredTodos = toDos.filter((item) => {
+		if(!filterDelegatesMap.has(filter)) {
+			console.error(`Invalid filter option: ${filter}`);
+			return;
+		}
+
+		return filterDelegatesMap.get(filter)(item);
+	});
 
 	function formatTotalText(toDoList) {
 		const toDoFiltered = toDoList.filter(toDo => !toDo.done);
@@ -49,16 +58,8 @@
 		});
 	}
 
-	function filterCompleted(event) {
-		filter = 'completed';
-	}
-
-	function filterActive(event) {
-		filter = 'active';
-	}
-
-	function filterAll(event) {
-		filter = 'all';
+	function applyFilter(event) {
+		filter = event.target.value;
 	}
 
 </script>
@@ -76,15 +77,14 @@
 		<div>
 			{formatTotalText(toDos)}
 			<br>
-			<input id="all" type="radio" value="All" name="filter" on:click={filterAll}>
+			<input id="all" type="radio" value="all" name="filter" on:click={applyFilter}>
 			<label for="all">All</label>
 			
-			<input id="active" type="radio" value="Active" name="filter" on:click={filterActive}>
+			<input id="active" type="radio" value="active" name="filter" on:click={applyFilter}>
 			<label for="active">Active</label>
 
-			<input id="completed" type="radio" value="Completed" name="filter" on:click={filterCompleted}>
+			<input id="completed" type="radio" value="completed" name="filter" on:click={applyFilter}>
 			<label for="completed">Completed</label>
-
 		</div>
 	{/if}
 
