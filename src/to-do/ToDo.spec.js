@@ -181,7 +181,7 @@ describe("given a completed Item", () => {
     describe('when rendering', () => {
         it('should add the "completed" class to the item', async () => {
             const label = rendered.getByText(props.toDo.text);
-            expect(label.className).toEqual('completed')
+            expect(label.className).toContain('completed')
         });
 
         it('renders the checkbox as checked', async () => {

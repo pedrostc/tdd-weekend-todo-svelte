@@ -86,7 +86,7 @@ describe('App', () => {
                 await userEvent.click(checkbox);
            
                 const label = rendered.getByText(item1Text);
-                expect(label.className).toEqual('completed')
+                expect(label.className).toContain('completed')
             });
 
             it('updates the total items counter', async () => {

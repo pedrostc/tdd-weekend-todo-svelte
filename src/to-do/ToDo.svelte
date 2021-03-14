@@ -58,10 +58,38 @@
 
 </script>
 
-<input type="checkbox" id={`todo-${toDo.id}`} on:click={onCheckedToggle} checked={toDo.done}>
-{#if isEditMode}
-<input type="text" value={toDo.text} on:blur={onBlur} on:keydown={handleKeyPress} use:focus>
-{:else}
-<label data-testid="itemLabel" for={`todo-${toDo.id}`} class:completed={toDo.done} on:dblclick={switchToEditMode}>{toDo.text}</label>					
-{/if}
-<button on:click={deleteClick}>Delete</button>
+<div class="todo">
+    <input type="checkbox" id={`todo-${toDo.id}`} on:click={onCheckedToggle} checked={toDo.done}>
+    {#if isEditMode}
+    <input type="text" value={toDo.text} on:blur={onBlur} on:keydown={handleKeyPress} use:focus>
+    {:else}
+    <label data-testid="itemLabel" for={`todo-${toDo.id}`} class:completed={toDo.done} on:dblclick={switchToEditMode}>{toDo.text}</label>					
+    {/if}
+    <button class="material-icons" on:click={deleteClick}>delete</button>
+</div>
+
+<style>
+    .todo {
+        display: flex;
+        align-items: center;
+    }
+    .todo > * {
+        padding-left: 12px;
+        padding-right: 12px;
+        margin: 0px;
+        margin-right: 1rem;
+    }
+    .todo > :is(label, input[type="text"]) {
+        flex-grow: 2;
+        border: none;
+    }
+    .completed {
+        text-decoration: line-through;
+    }
+
+    button {
+        border:none;   
+        background-color: transparent;   
+    }
+
+</style>

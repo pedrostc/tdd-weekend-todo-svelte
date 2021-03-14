@@ -75,36 +75,109 @@
 <main>
 	<h1>ToDos</h1>
 	<NewItem on:addItem={handleItem}/>
-	<ToDoList 
+	<ToDoList
 		toDos={filteredTodos} 
 		on:deleteItem={handleDelete} 
 		on:updateItem={handleUpdate}
 	></ToDoList>
 	
 	{#if showTotalText(toDos)}
-		<div>
-			{formatTotalText(toDos)}
-			<br>
-			<input id="all" type="radio" value="all" name="filter" on:click={applyFilter}>
-			<label for="all">All</label>
-			
-			<input id="active" type="radio" value="active" name="filter" on:click={applyFilter}>
-			<label for="active">Active</label>
-
-			<input id="completed" type="radio" value="completed" name="filter" on:click={applyFilter}>
-			<label for="completed">Completed</label>
+		<div class="filter">
+			<span class="item-counter">{formatTotalText(toDos)}</span>
+			<div class="all filter-option">
+				<input id="all" type="radio" value="all" name="filter" on:click={applyFilter}>
+				<label for="all">All</label>
+			</div>
+			<div class="active filter-option">
+				<input id="active" type="radio" value="active" name="filter" on:click={applyFilter}>
+				<label for="active">Active</label>
+			</div>
+			<div class="completed filter-option">
+				<input id="completed" type="radio" value="completed" name="filter" on:click={applyFilter}>
+				<label for="completed">Completed</label>
+			</div>
+			<div class="clear-completed" >
+			{#if hasCompleted(toDos)}
+				<button on:click={clearCompleted}>Clear Completed</button>
+			{/if}
+			</div>
 		</div>
-
 	{/if}
 
-	{#if hasCompleted(toDos)}
-		<div>
-			<button on:click={clearCompleted}>Clear Completed</button>
-		</div>
-	{/if}
+
 
 </main>
 
 <style>
+	
+	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+	@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+	main {
+		display: flex;
+		margin-left: 2rem;
+		margin-right: 2rem;
+		flex-direction: column;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	.filter {
+		display: flex;
+		align-content: space-around;
+		margin-top: 0.8rem;
+		flex-wrap: wrap;
+		min-height: 35px;
+	}
+	.filter > * {
+		display: flex;		
+		align-items: center;
+	}
+	.item-counter {
+		margin-right: auto;
+		width: 100px;
+	}
+	.filter-option {
+	}
+	.filter-option > *{
+		margin: 0px;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	.clear-completed {
+		margin-left: auto;
+		width: 140px;
+		justify-content: flex-end;
+	}
+	button {
+        border:none;
+		background-color: transparent;		    
+    }
+
+	button:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 600px) {
+		.filter {
+			flex-direction: column;
+			align-content: flex-start;
+		}
+		.filter > * {
+			width: 100%;
+    		align-items: flex-start;
+		}
+		.clear-completed {
+			justify-content: flex-start;
+		}
+		.clear-completed > button {
+			width: 100%; 
+		}
+	}
+
+	@media (min-width: 600px) {
+		.filter {
+			flex-direction: row;
+		}
+	}
 
 </style>

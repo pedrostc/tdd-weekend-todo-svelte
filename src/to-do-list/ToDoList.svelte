@@ -6,10 +6,10 @@
 
 </script>
 
-<main>
+
 
     <fieldset>
-		<ul>
+		<ul class="todo-list">
 			{#each toDos as toDo, index}
 				<li>
 					<ToDo 
@@ -22,4 +22,24 @@
 		</ul>
 	</fieldset>
 
-</main>
+
+
+<style>		
+
+    .todo-list {
+        display: flex;
+        flex-direction: column;
+		list-style: none;
+		padding: 0px;
+    }
+
+	.todo-list > li {
+		padding-top: 6px;
+		padding-bottom: 6px;
+	}
+
+	fieldset {
+		margin: 0;
+		border-radius: 0.3rem;
+	}
+</style>
